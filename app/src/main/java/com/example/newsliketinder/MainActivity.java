@@ -3,10 +3,13 @@ package com.example.newsliketinder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import com.example.newsliketinder.network.NewsApi;
 
 import android.os.Bundle;
 
+import com.example.newsliketinder.network.RetrofitClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,13 +24,21 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_search, R.id.navigation_save).build();
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController);
     }
+
+    NewsApi api = RetrofitClient.newInstance().create(NewsApi.class);
+    api.getTopHeadlines("US");
+
 
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp();
     }
+
+
 
 }
