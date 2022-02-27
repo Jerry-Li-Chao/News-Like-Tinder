@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.newsliketinder.R;
 import com.example.newsliketinder.repository.NewsRepository;
+import com.example.newsliketinder.repository.NewsViewModelFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,7 +77,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         NewsRepository repository = new NewsRepository();
-        viewModel = new HomeViewModel(repository);
+        viewModel = new ViewModelProvider(this, new NewsViewModelFactory(repository)).get(HomeViewModel.class);
         viewModel.setCountryInput("us");
         viewModel.getTopHeadlines()
         .observe(
